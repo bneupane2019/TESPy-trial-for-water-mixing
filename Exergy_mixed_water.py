@@ -6,7 +6,7 @@ from tespy import cmp, con, nwk, hlp
 
 
 class Parameters:
-    def __init__(self,tw, tc, td, ta, q, cp):
+    def __init__(self, tw, tc, td, ta, q, cp):
         self.Tw = tw
         self.Tc = tc
         self.Td = td
@@ -30,10 +30,10 @@ parameters_data = select_parameters()
 
 
 def mass_flow():
-    mf = parameters_data.Q/(4.19*(parameters_data.Td-parameters_data.Tc))
-    E_w = (hlp.h_pT(100000,318,'H2O'))
-    E_c = (hlp.h_pT(100000,281,'H2O'))
-    mfc = (100-(E_w*mf))/(E_c-E_w)
+    mf = parameters_data.Q/(4.19*(parameters_data.Td - parameters_data.Tc))
+    e_w = (hlp.h_pT(100000, 318, 'H2O'))
+    e_c = (hlp.h_pT(100000, 281, 'H2O'))
+    mfc = (100-(e_w*mf))/(e_c-e_w)
     mfw = mf-mfc
     return mfc, mfw
 
@@ -47,7 +47,7 @@ nw = nwk.network(fluids=['H2O'], T_unit='K', p_unit='bar', h_unit='kJ / kg',
 hw_in = cmp.source('hot water')
 ww_out = cmp.sink('warm water out')
 cc_in = cmp.source('cold water in')
-m = cmp.merge('merge',num_in=2)
+m = cmp.merge('merge', num_in=2)
 
 # connections
 lin1 = con.connection(hw_in, 'out1', m, 'in1')
@@ -63,8 +63,8 @@ lin3.set_attr(T=parameters_data.Td)
 
 # solve
 nw.solve('design')
-mass_flow = round(lin3.m.val_SI,2)
-print('Demand mass_flow = ',mass_flow)
+mass_flow = round(lin3.m.val_SI, 2)
+print('Demand mass_flow = ', mass_flow)
 
 # demand exergy calculations
 Tf = parameters_data.Td - parameters_data.Tc\
@@ -75,9 +75,9 @@ print('Supply_exergy =', Supply_exergy)
 # input exergy calculations
 CarnotExergy_inputm1 = parameters_data.Q*(
         1-(parameters_data.Ta/parameters_data.Tw))
-CarnotExergy_inputm2=parameters_data.Q*(
+CarnotExergy_inputm2 = parameters_data.Q*(
         1-(parameters_data.Ta/parameters_data.Tc))
 Input_exergy = CarnotExergy_inputm1+CarnotExergy_inputm2
 print('Input_exergy =', Input_exergy)
-Consumed_exergy=Input_exergy-Supply_exergy
+Consumed_exergy = Input_exergy-Supply_exergy
 print('Exergy_consumed =', Consumed_exergy)
