@@ -28,6 +28,9 @@ def select_parameters():
 
 parameters_data = select_parameters()
 
+nw = nwk.network(fluids=['H2O'], T_unit='K', p_unit='bar', h_unit='kJ / kg',
+                 m_unit='kg / s')
+
 
 def mass_flow():
     mf = parameters_data.Q/(4.19*(parameters_data.Td - parameters_data.Tc))
@@ -39,9 +42,6 @@ def mass_flow():
 
 
 mass_flow_data = mass_flow()
-
-nw = nwk.network(fluids=['H2O'], T_unit='K', p_unit='bar', h_unit='kJ / kg',
-                 m_unit='kg / s')
 
 
 hw_in = cmp.source('hot water')
